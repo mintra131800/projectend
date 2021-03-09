@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProjectName</string>
+     <string name = "facebook_app_id"> ID </string> 
+     
+</resources>
