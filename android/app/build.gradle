@@ -130,10 +130,11 @@ android {
 
     defaultConfig {
         applicationId "com.firebase"
-        minSdkVersion rootProject.ext.minSdkVersion
+        //minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        minSdkVersion 21
         multiDexEnabled true
     }
     splits {
@@ -183,7 +184,7 @@ android {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.3.0')
-
+    implementation 'com.android.support:multidex:1.0.3'
     
     implementation 'com.google.firebase:firebase-analytics'
     implementation fileTree(dir: "libs", include: ["*.jar"])
