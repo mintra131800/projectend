@@ -15,13 +15,7 @@ const AddTransaction = () => {
     const [modalsaveDelete, setModalsaveDelete] = useState(false);
     const [modalsaveAdd, setModalsaveAdd] = useState(false);
     const [modalDate, setModalDate] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('');
-    const onChange = textValue => setText(textValue);
-
-    // const dispatch = useDispatch();
-    // const [title, setTitle] = useState('กรุณาเลือกรายการ');
-    // const [price, setPrice] = useState('');
-
+ 
     const [datetime1, setdatetime1] = useState('');
     const [dataType1, setdataType1] = useState('');
     const [money1, setmoney1] = useState('');
@@ -43,24 +37,6 @@ const AddTransaction = () => {
     const [detail4, setdetail4] = useState('');
 
 
-
-
-    // const addcash = async () => {
-    //     // let userID = await AsyncStorage.getItem('userID');
-    //     let res = await Axios.post("http://172.20.10.2/warehouse-management-main/api/alarm/addcash", {
-    //         datetime1: datetime1,
-    //         datatype1: datatype1,
-    //         money1: money1,
-    //         detail1: detail1,
-    //         // userID: userID
-    //     })
-    //     if (res.data.status === "success") {
-    //         Alert.alert("success", "บันทึกสำเร็จ")
-    //         navigation.navigate('MainDrug')
-    //     } else {
-    //         Alert.alert("errer", "กรุณาดูข้อมูลใหม่อีกครั้ง")
-    //     }
-    // }
 
     const addcash = async () => {
         let res = await Axios.post("http://192.168.43.86:5000/addcash", {
@@ -130,20 +106,7 @@ const AddTransaction = () => {
     }
 
 
-    const onSubmit1 = async () => {
-        if (!title || !price) {
-            return alert('Please fill all fields');
-        }
-        const id = Math.floor(Math.random() * 100000000);
-
-        const newTransaction = {
-            id,
-            title,
-            price: +price,
-        };
-        await dispatch(addTransactionAddbank(newTransaction));
-        navigation.goBack();
-    };
+   
 
     return (
 
@@ -455,19 +418,7 @@ const AddTransaction = () => {
 
                                 </View>
                             </TouchableOpacity>
-                            {/* <TouchableOpacity style={{ width: "93%", height: 70, backgroundColor: "#F3AB9D", alignSelf: "center", marginTop: 10, borderRadius: 10 }}>
-                            <View style={{ flexDirection: "row" }}>
-                                <View style={{ flexDirection: 'column', width: '80%', height: "100%" }}>
-                                    <Text style={{ fontSize: 17, marginTop: 5, marginLeft: 10, fontWeight: '700', color: "#06CF51" }}>เพิ่มเป็นหนี้สิน</Text>
-                                    <Text style={{ fontSize: 15, marginTop: 5, marginLeft: 10, color: "#06CF51" }}>เพิ่มรายการในฐานข้อมูล</Text>
-                                </View>
-
-                                <Image source={require('../../assets/image/001-money.png')}
-                                    style={{ width: 35, height: 35, marginLeft: 5, marginTop: 15 }} />
-
-
-                            </View>
-                        </TouchableOpacity> */}
+                            
                             <TouchableOpacity onPress={() => { setModalsaveDelete(!modalsaveDelete) }} style={{ width: "93%", height: 70, backgroundColor: "#F5C2FC", alignSelf: "center", marginTop: 10, borderRadius: 10 }}>
                                 <Text style={{ fontWeight: "700", fontSize: 17, alignSelf: "center", marginTop: 20, color: '#8A3ED6' }}>✖ ยกเลิกการทำรายการ</Text>
                             </TouchableOpacity>
@@ -561,13 +512,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5
     },
-    openButton: {
-        backgroundColor: "#028C6A",
-        borderRadius: 10,
-        width: 100,
-        padding: 10,
-        elevation: 2
-    },
+    
     item: {
         marginVertical: 20,
     },
@@ -633,11 +578,6 @@ const styles = StyleSheet.create({
     },
 
 
-    listItemView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-
-    },
     top: {
         flex: 1,
         backgroundColor: '#ffffff',
@@ -655,9 +595,7 @@ const styles = StyleSheet.create({
         marginVertical: 9,
         borderBottomColor: 'black',
     },
-    containerbutton: {
-        alignItems: "center",
-    },
+   
     text: {
         marginTop: 10,
         width: 80,
@@ -666,39 +604,6 @@ const styles = StyleSheet.create({
         color: '#FFF',
         textAlign: "center",
         backgroundColor: '#FF9900',
-    },
-    category: {
-        width: 275,
-        height: 50,
-        backgroundColor: "red",
-        marginTop: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10
-    },
-    category1: {
-        width: 275,
-        height: 50,
-        backgroundColor: "green",
-        marginTop: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10
-    },
-    imagcategory: {
-        width: 70,
-        height: 75,
-        backgroundColor: "#fff",
-        margin: 10,
-        borderRadius: 10
-    },
-    imagcategory1: {
-        width: 50,
-        height: 50,
-        marginLeft: 7,
-        marginTop: 5
     },
     Boxcenter: {
         width: 400,

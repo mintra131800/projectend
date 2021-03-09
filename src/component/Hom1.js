@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   View,
   Text,
@@ -35,41 +35,6 @@ const Hom1 = ({ navigation }) => {
   const [title1, setTitle1] = useState('+Create Account');
   const [price1, setPrice1] = useState('');
 
-  // const onSubmit = async () => {
-  //   if (!title1 || !price1) {
-  //     return alert('Please fill all fields');
-  //   }
-  //   const id = Math.floor(Math.random() * 100000000);
-
-  //   const newTransaction = {
-  //     id,
-  //     title1,
-  //     price1: +price1,
-  //   };
-  //   await dispatch(addTransaction(newTransaction));
-    
-  //   setModalVisible(!modalVisible);
-  // };
-
-
-  // const [items, setItems] = useState([
-  //   { text: '', price: '' },
-  // ])
-
-
-  // const addItem = async () => {
-  //   if (!text || !price) {
-  //     return alert('Please fill all fields');
-  //   }
-  //   const id = Math.floor(Math.random() * 100000000);
-  //   const newTransaction = {
-  //     id,
-  //     text,
-  //     price: +price,
-  //   };
-  //   await dispatch(addTransactionHome(newTransaction));
-
-  // }
   const [username, setUsername] = useState('');
   const [password, setpassword] = useState('');
  
@@ -77,7 +42,7 @@ const Hom1 = ({ navigation }) => {
 
   const onRegister = async () => {
     let res = await Axios.post("http://192.168.43.86:5000/addmoney",{
-      money0:money0,
+      money0:money0
       // password:password
 
     })
@@ -88,6 +53,16 @@ const Hom1 = ({ navigation }) => {
     }
   }
 
+  const [Showmoney,setShowmoney]=useState([]);  
+    useEffect(() => {
+        async function fetchData() {
+          const res = await Axios.get( 'http://192.168.43.86:5000/showmoney' );
+          setShowmoney(res.data.money);
+        }
+        fetchData();
+      },[]);
+      console.log(Showmoney)
+
 
   const [money0, setmoney0] = useState('0');
   //const [password, setpassword] = useState('');
@@ -95,53 +70,7 @@ const Hom1 = ({ navigation }) => {
   const onChange2 = textValue2 => setprice(textValue2);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { transactions } = useSelector((state) => state.transactions);
-
-  const prices = transactions.map((transaction) => transaction.price);
-  const totalPrice = prices.reduce((prev, cur) => (prev += cur), 0);
- 
-
-  //////////////////////////////////////////////////////////////////////////////////
-  const { transactionsBank } = useSelector((state) => state.transactions);
-
-  const pricesBank = transactionsBank.map((transaction) => transaction.price);
-  const totalPriceBank = pricesBank.reduce((prev, cur) => (prev += cur), 0);
-  ///////////////////////////////////////////////////////////////////////////////
-  const { transactionsCredit } = useSelector((state) => state.transactions);
-
-  const pricesCredit = transactionsCredit.map((transaction) => transaction.priceIncom);
-  const totalPriceCredit = pricesCredit.reduce((prev, cur) => (prev += cur), 0);
-  /////////////////////////////////////////////////////////////////////////////////////////////
-  const { transactionsAddbank } = useSelector((state) => state.transactions);
-  const pricesAddbank = transactionsAddbank.map((transaction) => transaction.price);
-  const totalPriceAddbank = pricesAddbank.reduce((prev, cur) => (prev += cur), 0);
-
-  const { transactionsDeletebank } = useSelector((state) => state.transactions);
-  const pricesDeletebank = transactionsDeletebank.map((transaction) => transaction.price);
-  const totalPriceDeletebank = pricesDeletebank.reduce((prev, cur) => (prev += cur), 0);
-  /////////////////////////////////////////////////////////////////////////////////////
-  const { transactionsHome } = useSelector((state) => state.transactions);
-
-  const pricesHome = transactionsHome.map((transaction) => transaction.price);
-  const totalPriceHome = pricesHome.reduce((prev, cur) => (prev += cur), 0);
-  //////////////////////////////////////////////////////////////////////////////////
-
-  const total = ((totalPriceHome + totalPrice) - totalPriceAddbank + totalPriceDeletebank);
-  const totalBank = ((totalPriceBank + totalPriceAddbank) - totalPriceDeletebank);
-  const totalSum = ((totalPriceHome + totalPrice) + (totalPriceBank) + (totalPriceCredit));
-  const totalSumSum = ((totalPriceHome + totalPrice) + (totalPriceBank) + (totalPriceCredit));
-
-  const expense =
-    prices
-      .filter((price) => price < 0)
-      .reduce((prev, cur) => (prev += cur), 0)
-      .toFixed(2) * -1;
-  const expense1 =
-    prices
-      .filter((price) => price > 0)
-      .reduce((prev, cur) => (prev += cur), 0)
-      .toFixed(2) * +1;
-
+  
   return (
 
     <View style={styles.container}>
@@ -181,7 +110,7 @@ const Hom1 = ({ navigation }) => {
               <View >
                 <Icon size={20} name={'caret-down'} color={'#fff'} /></View>
             </TouchableOpacity>
-            {transactionsHome.length > 0 &&
+            {/* {money.length > 1 &&
               <ScrollView>
                 <Modal
                   transparent={true}
@@ -210,7 +139,7 @@ const Hom1 = ({ navigation }) => {
                                   source={require('../../assets/image/d1.png')}
                                   style={styles.buttonImageIconStyle} />
                                 <Text style={{ marginLeft: 10, color: 'black', textAlign: 'center', marginTop: 6, fontSize: 20, fontWeight: '700', paddingHorizontal: 10 }}>
-                                  {/* {username} */}
+                                  
                                 </Text>
                               </View>
 
@@ -222,8 +151,7 @@ const Hom1 = ({ navigation }) => {
                               </View>
                               <View style={{ paddingHorizontal: 5 }}></View>
                               <View style={{ width: 70, height: 20, backgroundColor: '#48A0DA', borderRadius: 15 }}>
-                                <Text style={{ textAlign: 'center', color: 'white' }}>
-                                  {transactionsAddbank.length + transactionsDeletebank.length + transactions.length} รายการ</Text>
+                                <Text style={{ textAlign: 'center', color: 'white' }}> รายการ</Text>
                               </View>
                             </View>
                             <Separator />
@@ -234,7 +162,7 @@ const Hom1 = ({ navigation }) => {
                               <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                                 เงินสด
                     </Text>
-                              <Text style={{ marginRight: 5, fontSize: 17 }}>{total} Bath</Text>
+                              <Text style={{ marginRight: 5, fontSize: 17 }}>{money} Bath</Text>
                             </View>
                             <Separator />
                             <View style={{ flexDirection: 'row', }}>
@@ -244,7 +172,7 @@ const Hom1 = ({ navigation }) => {
                               <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                                 บํญชีธนาคาร
                     </Text>
-                              <Text style={{ marginRight: 5, fontSize: 17 }}>{totalBank} bath</Text>
+                              <Text style={{ marginRight: 5, fontSize: 17 }}> bath</Text>
 
                             </View>
                             <Separator />
@@ -255,7 +183,7 @@ const Hom1 = ({ navigation }) => {
                               <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                                 รวม
                     </Text>
-                              <Text style={{ marginRight: 5, fontSize: 17 }}>{totalSumSum} bath</Text>
+                              <Text style={{ marginRight: 5, fontSize: 17 }}> bath</Text>
                             </View>
                             <Separator />
                             <TouchableOpacity style={{ width: "95%", height: 40, backgroundColor: '#40B824', marginLeft: 6, marginTop: 15, borderRadius: 10 }}>
@@ -270,9 +198,9 @@ const Hom1 = ({ navigation }) => {
                   </View>
                 </Modal>
               </ScrollView>
-            }
-            {
-              transactionsHome.length == 0 &&
+            } */}
+            {/* {
+              money.length == 0 && */}
               <Modal
                 transparent={true}
                 visible={modalVisible}
@@ -371,7 +299,7 @@ const Hom1 = ({ navigation }) => {
                   </View>
                 </View>
               </Modal>
-            }
+             {/* }*/} 
 
           </View>
         </View>
@@ -400,7 +328,7 @@ const Hom1 = ({ navigation }) => {
                               source={require('../../assets/image/d1.png')}
                               style={styles.buttonImageIconStyle} />
                             <Text style={{ marginLeft: 10, color: 'black', textAlign: 'center', marginTop: 6, fontSize: 17, fontWeight: '700', paddingHorizontal: 10 }}>
-                              {money0}
+                              {username}
                             </Text>
                           </View>
 
@@ -426,8 +354,7 @@ const Hom1 = ({ navigation }) => {
                           </View>
                           <View style={{ paddingHorizontal: 5 }}></View>
                           <View style={{ width: 70, height: 20, backgroundColor: '#48A0DA', borderRadius: 15 }}>
-                            <Text style={{ textAlign: 'center', color: 'white' }}>
-                              {transactionsAddbank.length + transactions.length} รายการ</Text>
+                            <Text style={{ textAlign: 'center', color: 'white' }}> รายการ</Text>
                           </View>
                         </View>
                         <Separator />
@@ -438,7 +365,7 @@ const Hom1 = ({ navigation }) => {
                           <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                             เงินสด
                     </Text>
-                          <Text style={{ marginRight: 5, fontSize: 17 }}>{money0} Bath</Text>
+                          <Text style={{ marginRight: 5, fontSize: 17 }}>{Showmoney} Bath</Text>
                         </View>
                         <Separator />
                         <View style={{ flexDirection: 'row', }}>
@@ -448,7 +375,7 @@ const Hom1 = ({ navigation }) => {
                           <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                             บํญชีธนาคาร
                     </Text>
-                          <Text style={{ marginRight: 5, fontSize: 17 }}>{money0} bath</Text>
+                          <Text style={{ marginRight: 5, fontSize: 17 }}>{Showmoney} bath</Text>
 
                         </View>
                         <Separator />
@@ -463,7 +390,7 @@ const Hom1 = ({ navigation }) => {
                           <Text style={{ flex: 1, color: 'black', marginTop: 4, fontSize: 17, fontWeight: '600', paddingHorizontal: 10 }}>
                             รวม
                     </Text>
-                          <Text style={{ marginRight: 5, fontSize: 17 }}>{money0} bath</Text>
+                          <Text style={{ marginRight: 5, fontSize: 17 }}>{Showmoney} bath</Text>
                         </View>
                         <Separator />
                       </View>
@@ -489,12 +416,11 @@ const Hom1 = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <View style={{ width: 70, height: 20, backgroundColor: '#eee', borderRadius: 15 }}>
-                            <Text style={{ textAlign: 'center', color: '#7F8C8D' }}>
-                              {transactions.length + transactionsDeletebank.length + transactionsAddbank.length} รายการ</Text>
+                            <Text style={{ textAlign: 'center', color: '#7F8C8D' }}> รายการ</Text>
                           </View>
                           <View style={{ paddingHorizontal: 5 }}></View>
                           <View style={{ width: 70, height: 20, backgroundColor: '#F98E05', borderRadius: 15 }}>
-                            <Text style={{ textAlign: 'center', color: '#fff' }}>{totalPrice} bath</Text>
+                            <Text style={{ textAlign: 'center', color: '#fff' }}> bath</Text>
                           </View>
                         </View>
                         <View style={{
@@ -512,7 +438,7 @@ const Hom1 = ({ navigation }) => {
                               รายจ่าย
                     </Text>
                             <Text style={{ color: '#F257C7', paddingHorizontal: 130, marginTop: 20, fontSize: 17 }}>
-                              {expense} bath
+                               bath
                     </Text>
                           </View>
                         </View>
@@ -532,7 +458,7 @@ const Hom1 = ({ navigation }) => {
 
 
                             <Text style={{ color: '#8E44AD', paddingHorizontal: 130, marginTop: 20, fontSize: 17 }}>
-                              {expense1} bath
+                               bath
                     </Text>
                           </View>
                         </View>
@@ -559,12 +485,11 @@ const Hom1 = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                           <View style={{ width: 70, height: 20, backgroundColor: '#eee', borderRadius: 15, marginTop: 5 }}>
-                            <Text style={{ textAlign: 'center', color: '#7F8C8D' }}>
-                              {transactions.length + transactionsDeletebank.length + transactionsAddbank.length} รายการ</Text>
+                            <Text style={{ textAlign: 'center', color: '#7F8C8D' }}> รายการ</Text>
                           </View>
                           <View style={{ paddingHorizontal: 5 }}></View>
                           <View style={{ width: 70, height: 20, backgroundColor: '#F98E05', borderRadius: 15, marginTop: 5 }}>
-                            <Text style={{ textAlign: 'center', color: '#Fff' }}>{totalPrice} bath</Text>
+                            <Text style={{ textAlign: 'center', color: '#Fff' }}>bath</Text>
                           </View>
                         </View>
                         <View style={{
@@ -582,7 +507,7 @@ const Hom1 = ({ navigation }) => {
                               รายจ่าย
                     </Text>
                             <Text style={{ color: '#F257C7', paddingHorizontal: 130, marginTop: 20, fontSize: 17 }}>
-                              {expense} bath
+                               bath
                     </Text>
                           </View>
                         </View>
@@ -600,7 +525,7 @@ const Hom1 = ({ navigation }) => {
                               รายรับ
                     </Text>
                             <Text style={{ color: '#F257C7', paddingHorizontal: 130, marginTop: 20, fontSize: 17 }}>
-                              {expense1} bath
+                              bath
                     </Text>
                           </View>
                         </View>
@@ -629,13 +554,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  commandButton: {
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: '#FF6347',
-    alignItems: 'center',
-    marginTop: 10,
-  },
+  
   panel: {
     padding: 20,
     backgroundColor: '#fff',
@@ -652,53 +571,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-  },
-  panelHeader: {
-    alignItems: 'center',
-  },
-  panelHandle: {
-    width: 40,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#00000040',
-    marginBottom: 10,
-  },
-  panelTitle: {
-    fontSize: 27,
-    height: 35,
-  },
-  panelSubtitle: {
-    fontSize: 14,
-    color: 'gray',
-    height: 30,
-    marginBottom: 10,
-  },
-  panelButton: {
-    padding: 13,
-    borderRadius: 10,
-    backgroundColor: '#FF6347',
-    alignItems: 'center',
-    marginVertical: 7,
-  },
-  panelButtonTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-  action: {
-    flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
-    paddingBottom: 5,
-  },
-  actionError: {
-    flexDirection: 'row',
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#FF0000',
-    paddingBottom: 5,
   },
   textInput: {
     flex: 1,

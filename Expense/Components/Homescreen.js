@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, Text, FlatList, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Container, ListItem, Body, Right } from 'native-base';
@@ -10,7 +10,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteTransaction, deleteTransactionBank, deleteTransactionAddbank, deleteTransactionDeletebank } from '../store/action/transactionAction';
 
 
-function Item({ title, id, price, comment }) {
+function Item({ datetime1,dataType1, money1,detail1}) {
+  const [Showlist,setShowlist]=useState([]);  
+    useEffect(() => {
+        async function fetchData() {
+          const res = await axios.get('http://192.168.43.86:5000/showlist');
+          setShowlist(res.data.list);
+        }
+        fetchData();
+      },[]);
+      console.log(Showlist)
   
   const dispatch = useDispatch();
   let date = new Date();
@@ -41,7 +50,7 @@ function Item({ title, id, price, comment }) {
             style={{ width: 40, height: 40, marginLeft: 10, marginTop: 10 }}
           />
           
-            <Text style={{ margin: 15 }}>{comment}</Text>
+            <Text style={{ margin: 15 }}>{detail1}</Text>
           
           
 
@@ -50,7 +59,7 @@ function Item({ title, id, price, comment }) {
 
         <View style={{ width: 100, height: 40, marginTop: 10 }}>
           <Text style={{ fontSize: 17, fontWeight: '700', margin: 10 }}>
-            {title}
+            {dataType1}
           </Text>
           <View style={{ width: 100, height: 22, backgroundColor: "#AFFBC4", borderRadius: 15 }}>
             <Text
@@ -61,7 +70,7 @@ function Item({ title, id, price, comment }) {
                 fontWeight: '400',
                 color: price > 0 ? '#3DA558' : '#ff4500',
               }}>
-              {price > 0 ? `▲${price} Bath` : `▼${Math.abs(price)} Bath`}
+              {money1}
             </Text>
           </View>
 
@@ -83,7 +92,7 @@ function Item({ title, id, price, comment }) {
             </TouchableOpacity>
             <View style={{ width: 120, height: 20, marginTop: 5 }}>
               <Text style={{ color: "#818280" }}>
-                {(date.toLocaleString())}
+               {detail1}
               </Text>
             </View>
           </View>
@@ -205,13 +214,13 @@ function ScreenDeletebank({ title, id, price }) {
 
 const HomeScreen = ({ navigation }) => {
   const { transactions } = useSelector((state) => state.transactions);
-  console.log(transactions);
-  const { transactionsBank } = useSelector((state) => state.transactions);
-  console.log(transactionsBank);
-  const { transactionsAddbank } = useSelector((state) => state.transactions);
-  console.log(transactionsAddbank);
-  const { transactionsDeletebank } = useSelector((state) => state.transactions);
-  console.log(transactionsDeletebank);
+  // console.log(transactions);
+  // const { transactionsBank } = useSelector((state) => state.transactions);
+  // console.log(transactionsBank);
+  // const { transactionsAddbank } = useSelector((state) => state.transactions);
+  // console.log(transactionsAddbank);
+  // const { transactionsDeletebank } = useSelector((state) => state.transactions);
+  // console.log(transactionsDeletebank);
   return (
     <Container>
       <Animated.View
@@ -230,16 +239,16 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={{ flex: 1, marginTop: -40, backgroundColor: "#eee" }}>
         <ScrollView>
-          {transactions.length > 0 &&
+          { transactions.length> 0 &&
             <FlatList
               keyExtractor={(item, index) => item.id.toString()}
               data={transactions}
               renderItem={({ item }) => (
-                <Item title={item.title} price={item.price} id={item.id} comment={item.comment}/>
+                <Item datetime1={item.datetime1} dataType1={item.dataType1} money1={item.money1} detail1={item.detail1}/>
               )}
             />
           }
-          {transactionsDeletebank.length > 0 &&
+          {/* {transactionsDeletebank.length > 0 &&
             <FlatList
               keyExtractor={(item, index) => item.id.toString()}
               data={transactionsDeletebank}
@@ -256,10 +265,10 @@ const HomeScreen = ({ navigation }) => {
                 <ScreenAddbank title={item.title} price={item.price} id={item.id} />
               )}
             />
-          }
+          } */}
           {
             transactions.length == 0 &&
-            <Empty />
+            <Empty/>
           }
 
         </ScrollView>

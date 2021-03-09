@@ -14,19 +14,7 @@ import axios from 'axios';
 const Balance = ({ navigation }) => {
     const [ShoweAdd, setShoweAdd] = useState(false);
     const [modalAddlist, setModalAddlist] = useState(false);
-    const { transactions } = useSelector((state) => state.transactions);
-    const prices = transactions.map((transaction) => transaction.price);
-    const totalPrice = prices.reduce((prev, cur) => (prev += cur), 0).toFixed(2);
-    const expense =
-        prices
-            .filter((price) => price < 0)
-            .reduce((prev, cur) => (prev += cur), 0)
-            .toFixed(2) * -1;
-    const expense1 =
-        prices
-            .filter((price) => price > 0)
-            .reduce((prev, cur) => (prev += cur), 0)
-            .toFixed(2) * +1;
+    
 
     const [Showlist,setShowlist]=useState([]);  
     useEffect(() => {
@@ -36,7 +24,8 @@ const Balance = ({ navigation }) => {
         }
         fetchData();
       },[]);
-    console.log(Showlist)
+      console.log(Showlist)
+   
     
     return (
         <View style={styles.Box}>
@@ -59,7 +48,7 @@ const Balance = ({ navigation }) => {
                         color: '#DCA74C',
                         fontWeight: '700',
                     }}>
-                    {totalPrice} Bath
+                     Bath
         </Text>
 
             </View>
@@ -176,7 +165,7 @@ const Balance = ({ navigation }) => {
                                         color: 'red',
 
                                     }}>
-                                    ▼{expense} Bath
+                                    ▼ Bath
                                 </Text>
                             </View>
                         </View>
@@ -202,7 +191,7 @@ const Balance = ({ navigation }) => {
                                         color: '#009BFC',
                                         marginLeft: 22
                                     }}>
-                                    ▲{expense1} Bath
+                                    ▲ Bath
                                 </Text>
                             </View>
                         </View>
